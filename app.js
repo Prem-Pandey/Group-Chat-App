@@ -1,8 +1,13 @@
 const express = require("express");
 const app = express();
+const env = require("dotenv");
 const path = require("path");
-
+// const sequelize = require("sequelize")
+env.config();
 const userRoutes = require("./routes/user");
+
+const sequelize = require("./connections/database");
+const User = require("./models/user");
 
 app.use(express.urlencoded({ extended: false }));
 
@@ -18,6 +23,7 @@ app.use((req, res) => {
 
 async function main() {
   try {
+    // await sequelize.sync();
     console.log("Database Connection Successfull");
     app.listen(3000);
     console.log("connected to Port 3000");
