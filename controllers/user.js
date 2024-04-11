@@ -47,3 +47,47 @@ exports.postSignup = async (req, res) => {
     });
   }
 };
+exports.generateAccessToken = (id, name) => {
+  return jwt.sign({ id, name }, process.env.SECRET_KEY);
+};
+exports.getLogin = (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'login.html'));
+};
+exports.postLogin = async (req, res) => {
+  const t = await sequelize.transaction();
+  try {
+    let email = req.body.email;
+    let password = req.body.password;
+    let user = await User.findOne({
+      where: {
+        email,
+      },
+      transaction: t,
+    });
+    if (!user) {
+      await t.rollback();
+      return res.status(404).json({
+        error: "User Not found",
+      });
+    }
+    let valid = await bcrypt.compare(password, user.password);
+    if (!valid) {
+      await t.rollback();
+      return res.status(401).json({
+        error: "Incorrect Password",
+      });
+    }
+    await t.commit();
+    res.status(201).json({
+      message: "Logged In Successfully",
+      token: exports.generateAccessToken(user.id, user.name),
+    });
+  } catch (error) {
+    console.log("error message: "+error)
+    await t.rollback();
+    res.status(500).json({
+      success: false,
+      error: "Something Went Wrong!",
+    });
+  }
+};
