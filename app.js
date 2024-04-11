@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const env = require("dotenv");
+const cors = require("cors");
 const path = require("path");
 // const sequelize = require("sequelize")
 env.config();
@@ -12,7 +13,12 @@ const User = require("./models/user");
 app.use(express.urlencoded({ extended: false }));
 
 app.use(express.json());
-
+app.use(
+  cors({
+    origin: "http://127.0.0.1:5500",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 app.use(express.static("public"));
 app.use(userRoutes);
 
