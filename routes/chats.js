@@ -48,9 +48,9 @@ router.get(
 // );
 
 router.get("/all-users", chatController.getAllUsers);
-// router.post("/admin", chatController.CreateUserAdmin);
-// router.post("/remove-admin", chatController.romoveAdmin);
-// router.post("/remove-user", chatController.romoveGroupUser);
-// router.post("/add-users", chatController.postAddUsersToGroup);
+router.post("/admin", chatController.CreateUserAdmin);
+router.post("/remove-admin", chatController.romoveAdmin);
+router.post("/remove-user", chatController.romoveGroupUser);
+router.post("/add-users", chatController.postAddUsersToGroup);
 
 module.exports = router;
