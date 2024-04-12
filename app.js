@@ -1,5 +1,6 @@
 const express = require("express");
 const { createServer } = require("http");
+const { Server } = require("socket.io");
 const app = express();
 const env = require("dotenv");
 const cors = require("cors");
@@ -13,6 +14,7 @@ const User = require("./models/user");
 const Chats = require("./models/chats");
 const Groups = require('./models/groups')
 const Admin = require("./models/admin");
+const websocketService = require("./services/websocket");
 
 app.use(express.urlencoded({ extended: false }));
 
@@ -30,6 +32,15 @@ app.use((req, res) => {
   res.sendFile(path.join(__dirname, `${req.url}`));
 });
 
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: ["https://admin.socket.io"],
+    credentials: true,
+  },
+});
+io.on("connection", websocketService);
+
 User.hasMany(Chats);
 Chats.belongsTo(User);
 
@@ -46,7 +57,8 @@ async function main() {
   try {
     await sequelize.sync();
     console.log("Database Connection Successfull");
-    app.listen(3000);
+    // app.listen(3000);
+    httpServer.listen(process.env.PORT || 3000);
     console.log("connected to Port 3000");
   } catch (error) {
     console.log(error);
