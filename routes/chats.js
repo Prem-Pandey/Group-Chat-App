@@ -40,12 +40,12 @@ router.get(
   chatController.getGroups
 );
 // Route for uploading files
-// router.post(
-//   "/uploadfiles",
-//   upload.single("image"),
-//   userAuthentication.authenticate,
-//   chatController.postAddFiles
-// );
+router.post(
+  "/uploadfiles",
+  upload.single("image"),
+  userAuthentication.authenticate,
+  chatController.postAddFiles
+);
 
 router.get("/all-users", chatController.getAllUsers);
 router.post("/admin", chatController.CreateUserAdmin);

@@ -307,7 +307,7 @@ const User = require("../models/user");
 const Groups = require("../models/groups");
 const Admin = require("../models/admin");
 const fs = require("fs");
-// const awsService = require("../services/aws_s3");
+const awsService = require("../services/awsS3");
 exports.postAddChat = async (req, res) => {
   const t = await sequelize.transaction();
   try {

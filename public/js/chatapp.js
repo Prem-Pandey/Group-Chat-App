@@ -1341,7 +1341,59 @@ async function UpdateGroupUsers(event) {
 }
 
 function previewImage() {
-  const fileInput = document.getElementById("fileInput");
+  // const fileInput = document.getElementById("fileInput");
+//   const previewImage = document.getElementById("divforimage");
+
+//   const file = fileInput.files[0];
+//   if (file) {
+//     const reader = new FileReader();
+//     reader.onload = function (event) {
+//       previewImage.src = event.target.result;
+//       previewImage.style.display = "block";
+//     };
+//     reader.readAsDataURL(file);
+//     console.log("Path:", file);
+//   }
+// }
+
+// // Add event listener to file input
+// document.getElementById("fileInput").addEventListener("change", previewImage);
+
+// // Listen for change event on file inputs
+// document
+//   .getElementById("uploadForm")
+//   .addEventListener("submit", async function (event) {
+//     event.preventDefault();
+
+//     const formData = new FormData();
+//     const fileInput = document.getElementById("fileInput1");
+//     formData.append("image", fileInput.files[0]);
+//     const token = localStorage.getItem("token");
+//     let parsedToken = parseJwt(token);
+//     let userName = parsedToken.name;
+//     let groupid = localStorage.getItem("selectedGroup");
+//     try {
+//       const response = await axios.post(
+//         `http://localhost:3000/uploadfiles?groupid=${groupid}`,
+//         formData,
+//         {
+//           headers: {
+//             "Content-Type": "multipart/form-data",
+//             Authorization: token,
+//           },
+//         }
+//       );
+//       ShowMyChatsOnScreen(response.data.imagemsg);
+//       socket.emit(
+//         "new-group-message",
+//         groupid,
+//         response.data.imagemsg,
+//         userName
+//       );
+//     } catch (error) {
+//       console.error("Error uploading image:", error);
+//     }
+const fileInput = document.getElementById("fileInput");
   const previewImage = document.getElementById("divforimage");
 
   const file = fileInput.files[0];
@@ -1355,8 +1407,6 @@ function previewImage() {
     console.log("Path:", file);
   }
 }
-
-// Add event listener to file input
 document.getElementById("fileInput").addEventListener("change", previewImage);
 
 // Listen for change event on file inputs
@@ -1369,8 +1419,6 @@ document
     const fileInput = document.getElementById("fileInput1");
     formData.append("image", fileInput.files[0]);
     const token = localStorage.getItem("token");
-    let parsedToken = parseJwt(token);
-    let userName = parsedToken.name;
     let groupid = localStorage.getItem("selectedGroup");
     try {
       const response = await axios.post(
@@ -1384,12 +1432,6 @@ document
         }
       );
       ShowMyChatsOnScreen(response.data.imagemsg);
-      socket.emit(
-        "new-group-message",
-        groupid,
-        response.data.imagemsg,
-        userName
-      );
     } catch (error) {
       console.error("Error uploading image:", error);
     }
