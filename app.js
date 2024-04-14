@@ -5,9 +5,11 @@ const app = express();
 const env = require("dotenv");
 const cors = require("cors");
 const path = require("path");
+
 env.config();
 const userRoutes = require("./routes/user");
 const chatRoutes = require("./routes/chats");
+const passwordRoutes = require("./routes/reset_password");
 
 const sequelize = require("./connections/database");
 const User = require("./models/user");
@@ -15,6 +17,7 @@ const Chats = require("./models/chats");
 const Groups = require('./models/groups')
 const Admin = require("./models/admin");
 const websocketService = require("./services/websocket");
+const ForgetPassword = require("./models/forgot_password");
 
 app.use(express.urlencoded({ extended: false }));
 
@@ -28,6 +31,7 @@ app.use(
 app.use(express.static("public"));
 app.use(userRoutes);
 app.use(chatRoutes);
+app.use("/password", passwordRoutes)
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, `${req.url}`));
 });
@@ -52,6 +56,9 @@ Chats.belongsTo(Groups);
 
 User.hasMany(Admin);
 Groups.hasMany(Admin);
+
+User.hasMany(ForgetPassword);
+ForgetPassword.belongsTo(User);
 
 async function main() {
   try {
